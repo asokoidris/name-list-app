@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>USER LISTING WEBSITE</title>
+
+    <!-- Add the Bootstrap CSS library -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!-- Add the jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Add the Bootstrap JS library -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container my-5">
+        <h1>Names App</h1>
+        <form action="/add-names" method="POST" class="my-3">
+            <div class="form-group">
+                <label for="names">Enter names separated by commas:</label>
+                <input type="text" name="names" id="names" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <% if (names.length===0) { %>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Names</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Please enter some names separated by commas.🥺
+                        </td>
+                    </tr>
+                </tbody>
+                <% } else { %>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (var i=0; i < names.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= names[i].name %>
+                                    </td>
+                                    <td>
+                                        <div id="edit-form-<%= names[i]._id %>" class="modal-body edit-form"
+                                            style="display:none;">
+                                            <button type="button" class="close"
+                                                onclick="hideEditForm('<%= names[i]._id %>')">&times;</button>
+                                            <form action="/update" method="POST">
+                                                <input type="hidden" name="id" value="<%= names[i]._id %>">
+                                                <div class="form-group">
+                                                    <label for="updatedName-<%= names[i]._id %>">Update Name:</label>
+                                                    <input type="text" name="updatedName"
+                                                        id="updatedName-<%= names[i]._id %>" class="form-control"
+                                                        value="<%= names[i].name %>" required />
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                            </form>
+                                        </div>
+                                        <div class="btn-group float-right" role="group">
+                                            <button type="button" class="btn btn-primary btn-lg"
+                                                onclick="showEditForm('<%= names[i]._id %>')">Edit</button>
+
+
+                                            <form action="/delete" method="POST" class="d-inline">
+                                                <input type="hidden" name="id" value="<%= names[i]._id %>">
+                                                <button type="submit" class="btn btn-danger btn-lg">Delete</button>
+                                            </form>
+                                        </div>
+
+
+
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                    <% } %>
+
+    </div>
+
+    <script src="/js/script.js"></script>
+
+</body>
+
+</html>
